@@ -1,0 +1,80 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>IFE JavaScript Task 01</title>
+
+    <style>
+        span {
+            margin: 20px 5px;
+            padding: 5px;
+            display: inline-block;
+            background-color: red;
+            color: #fff;
+            width: auto;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+        }
+    </style>
+  </head>
+    <body>
+
+    <input type="number" id="text" />
+    <button id="left-in">左侧入</button>
+    <button id="right-in">右侧入</button>
+    <button id="left-out">左侧出</button>
+    <button id="right-out">右侧出</button>
+
+    <!--数据渲染的位置-->
+    <div id="results">
+
+    </div>
+
+    <script type="text/javascript">
+
+        /**
+            点击事件处理函数，这里使用了事件委托
+        */
+        var data = [];
+
+        function handleEvent(event) {
+            // 只对按钮的事件经行监听
+            if (event.target.tagName === "BUTTON") {
+                var text = document.getElementById("text");
+                switch (event.target.id) {
+                    case "left-in":
+                        data.unshift(text.value);
+                        break;
+                    case "right-in":
+                        data.push(text.value);
+                        break;
+                    case "left-out":
+                        data.shift();
+                        break;
+                    case "right-out":
+                        data.pop();
+                        break;
+                }
+                render(data);
+            }
+        }
+
+        /**
+            渲染函数：用来渲染更新后的列表
+        */
+        function render(data) {
+            var results = document.getElementById("results");
+            results.innerHTML = "";
+            for (var i=0; i<data.length; i++) {
+                var span = document.createElement("span");
+                span.innerText = data[i];
+                results.appendChild(span);
+            }
+        }
+
+
+        document.body.addEventListener("click", handleEvent);
+    </script>
+    </body>
+</html>
