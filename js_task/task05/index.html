@@ -1,0 +1,143 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>IFE JavaScript Task 01</title>
+
+    <style>
+        #results {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        span {
+            margin: 20px 5px;
+            padding: 5px;
+            display: inline-block;
+            background-color: red;
+            color: #fff;
+            width: auto;
+            text-align: center;
+
+        }
+    </style>
+  </head>
+    <body>
+
+    <input type="number" min="10" max="100" id="text" />
+    <button id="left-in">左侧入</button>
+    <button id="right-in">右侧入</button>
+    <button id="left-out">左侧出</button>
+    <button id="right-out">右侧出</button>
+    <br>
+    <button id="sort">排序</button>
+
+    <!--数据渲染的位置-->
+    <div id="results">
+
+    </div>
+    
+
+    <script type="text/javascript">
+
+        // 用来放置操作的数据
+        var data = [];
+
+        /**
+            点击事件处理函数，这里使用了事件委托
+        */
+        function handleEvent(event) {
+            // 只对按钮的事件经行监听
+            
+            if (data.length > 60) {
+                alert("已经有60个元素了，不能再多了");
+                return;
+            }
+
+            if (event.target.tagName === "BUTTON") {
+                var text = document.getElementById("text");
+                switch (event.target.id) {
+                    case "left-in":
+                        data.unshift(text.value);
+                        break;
+                    case "right-in":
+                        data.push(text.value);
+                        break;
+                    case "left-out":
+                        data.shift();
+                        break;
+                    case "right-out":
+                        data.pop();
+                        break;
+                }
+                render(data);
+            }
+        }
+
+        /**
+            处理点击排序按钮的事件处理器
+        */
+        function handleSortEvent() {
+            insertSort(data);
+        }
+
+        /**
+            插入排序
+        */
+        function insertSort(data) {
+            for (var x=1; x<data.length; x++) {
+                var current = data[x];
+                while (parseInt(data[x-1]) > parseInt(current) && x>0) {
+                    // 将 i-1 位置的元素移动到 i 的位置上
+                    data[x] = data[x-1];
+                    x -= 1;
+                }
+                data[x] = current;
+                for(var i=0; i<10000; i++){for(var j=0; j<10000; j++){}};
+                render(data);
+            }                
+        }
+
+
+        /**
+            渲染函数：用来渲染更新后的列表
+        */
+        function render(data) {
+            var results = document.getElementById("results");
+            results.innerHTML = "";
+            for (var i=0; i<data.length; i++) {
+                var span = document.createElement("span");
+                span.innerText = data[i];
+                span.style.height = data[i] + "px";
+                span.style.lineHeight = data[i] + "px";
+                results.appendChild(span);
+            }
+        }
+
+        function checkNum() {
+            var left_in = document.getElementById("left-in");
+            var right_in = document.getElementById("right-in");
+
+            if (/\D/g.test(this.value)) {
+                alert('只能输入数字');
+                this.value = '';
+            };
+            if (this.value >= 10 && this.value <= 100) {
+                [left_in, right_in].forEach((item) => {
+                    item.disabled = '';
+                });
+            } else {
+                [left_in, right_in].forEach((item) => {
+                    item.disabled = true;
+                });
+            }
+        }
+        
+        //给输入框添加监听事件
+        document.getElementById("text").addEventListener('keyup', checkNum);
+
+        document.body.addEventListener("click", handleEvent);
+        document.getElementById("sort").addEventListener("click", handleSortEvent);
+    </script>
+    </body>
+</html>
