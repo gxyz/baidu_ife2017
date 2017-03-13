@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #results div {
+            display: inline-block;
+            padding: 5px;
+            margin: 5px 10px;
+            background: #ccc;
+            color: #fff;
+        }
+
+        .select {
+            color: #0ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="ctrl">
+        <textarea rows="5" cols="20" placeholder="请输入字符并用不同符号分隔" id="textArea"></textarea><br/>
+        <button id="insert">插入</button>
+        <button id="search">查询</button>
+        <br>
+        <input id="searchInput"></input>
+    </div>
+    <div id="results"></div>
+    <script>
+        var words = [];
+
+        /**
+            插入按钮的事件处理程序
+        */
+        function insertWords() {
+            var content = document.getElementById("textArea").value.trim();
+            words = content.split(/[^0-9a-zA-Z\u4e00-\u9fa5]+/).filter(function(item) {
+                if (item != null && item.length>0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+
+            render(words);
+        }
+
+        /**
+            查询按钮的事件处理程序
+        */
+        function searchWords() {
+            var content = document.getElementById("searchInput").value.trim();
+            render(words, content)
+        }
+
+        /**
+            渲染函数用来渲染最后结果
+        */
+        function render(words, search_word) {
+            var results = document.getElementById("results");
+            results.innerHTML = "";
+            for (var i=0; i<words.length; i++) {
+                if (search_word !== undefined) {
+                    var value = words[i].replace(new RegExp(search_word, "g"), "<span class='select'>" + search_word + "</span>");
+                } else {
+                    var value = words[i]
+                }
+                var div = document.createElement("div");
+                div.innerHTML = value;
+                results.appendChild(div);
+            }
+        }
+
+        document.getElementById("insert").addEventListener("click", insertWords);
+        document.getElementById("search").addEventListener("click", searchWords);
+    </script>
+</body>
+</html>
