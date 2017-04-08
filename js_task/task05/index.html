@@ -7,6 +7,7 @@
     <style>
         #results {
             display: flex;
+            width: 500px;
             align-items: flex-end;
         }
 
@@ -29,6 +30,7 @@
     <button id="right-in">右侧入</button>
     <button id="left-out">左侧出</button>
     <button id="right-out">右侧出</button>
+    <button id="random">随机生成数据</button>
     <br>
     <button id="sort">排序</button>
 
@@ -41,7 +43,9 @@
     <script type="text/javascript">
 
         // 用来放置操作的数据
-        var data = [];
+        
+        var data = [10, 50,20,30,100];
+
 
         /**
             点击事件处理函数，这里使用了事件委托
@@ -84,7 +88,7 @@
         /**
             插入排序
         */
-        function insertSort(data) {
+        function insertSort() {
             for (var x=1; x<data.length; x++) {
                 var current = data[x];
                 while (parseInt(data[x-1]) > parseInt(current) && x>0) {
@@ -93,8 +97,6 @@
                     x -= 1;
                 }
                 data[x] = current;
-                for(var i=0; i<10000; i++){for(var j=0; j<10000; j++){}};
-                render(data);
             }                
         }
 
@@ -107,11 +109,11 @@
             results.innerHTML = "";
             for (var i=0; i<data.length; i++) {
                 var span = document.createElement("span");
-                span.innerText = data[i];
-                span.style.height = data[i] + "px";
+                span.style.height = data[i]*2 + "px";
                 span.style.lineHeight = data[i] + "px";
                 results.appendChild(span);
             }
+            console.log(data);
         }
 
         function checkNum() {
@@ -132,12 +134,19 @@
                 });
             }
         }
+
+        function randomNum() {
+            data = [];
+            for (var i=0; i<20; i++) {
+                data.push(Math.floor(Math.random()*99 + 10));
+            }
+        }
         
         //给输入框添加监听事件
         document.getElementById("text").addEventListener('keyup', checkNum);
-
         document.body.addEventListener("click", handleEvent);
         document.getElementById("sort").addEventListener("click", handleSortEvent);
+        document.getElementById("random").addEventListener("click", randomNum);
     </script>
     </body>
 </html>
